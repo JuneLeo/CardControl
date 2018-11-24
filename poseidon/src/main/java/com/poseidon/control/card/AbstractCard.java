@@ -1,10 +1,11 @@
 package com.poseidon.control.card;
 
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.poseidon.control.CardControl;
 import com.poseidon.control.control.IPrority;
-import com.poseidon.control.control.Priority;
 import com.poseidon.control.presenter.ICardPresenter;
 import com.poseidon.control.view.ICardView;
 
@@ -60,17 +61,7 @@ public abstract class AbstractCard implements ICard {
     }
 
     @Override
-    public CardControl getPoseidonControl() {
-        return null;
-    }
-
-    @Override
-    public void onAttachCardManager(CardManager manager) {
-
-    }
-
-    @Override
-    public CardManager getCardManager() {
+    public CardControl getCardControl() {
         return null;
     }
 

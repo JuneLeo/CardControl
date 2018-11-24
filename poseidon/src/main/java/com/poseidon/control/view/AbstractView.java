@@ -11,14 +11,23 @@ import com.poseidon.control.presenter.ICardPresenter;
 /**
  * Created by spf on 2018/11/15.
  */
-public abstract class AbstractView<T extends ICardPresenter,VM extends CardVM> implements ICardView {
+public abstract class AbstractView<T extends ICardPresenter, VM extends CardVM> implements ICardView {
 
     protected T iCardPresenter;
     protected VM iCardVM;
+    protected View view;
+
+    protected ViewGroup rootView;
+
+    @Override
+    public void onBindView(View view, ViewGroup parent) {
+        this.view = view;
+        this.rootView = parent;
+    }
 
     @Override
     public void onCreate(Bundle bundle) {
-        //activity onCreate完成后回调
+        //nothing
     }
 
     @Override
@@ -56,16 +65,22 @@ public abstract class AbstractView<T extends ICardPresenter,VM extends CardVM> i
         return true;
     }
 
-    @Override
-    public int getVisibility() {
-        return ICard.DEFAULT;
-    }
-
-    public void onBindPresenter(T iCardPresenter){
+    public void onBindPresenter(T iCardPresenter) {
         this.iCardPresenter = iCardPresenter;
     }
 
-    public void setCardVM(VM cardVM){
+    public void onBindCardVM(VM cardVM) {
         this.iCardVM = cardVM;
+    }
+
+
+    @Override
+    public View getView() {
+        return view;
+    }
+
+    @Override
+    public ViewGroup getRootView() {
+        return rootView;
     }
 }

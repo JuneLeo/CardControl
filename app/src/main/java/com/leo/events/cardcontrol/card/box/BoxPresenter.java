@@ -1,13 +1,11 @@
 package com.leo.events.cardcontrol.card.box;
 
-import com.poseidon.control.control.Priority;
 import com.poseidon.control.obsever.Subscriber;
 import com.poseidon.control.presenter.AbstractPresenter;
 
 /**
  * Created by spf on 2018/11/15.
  */
-@Priority
 public class BoxPresenter extends AbstractPresenter<BoxCardVM> {
 
     @Override
@@ -21,7 +19,7 @@ public class BoxPresenter extends AbstractPresenter<BoxCardVM> {
     }
 
     public void btnClick() {
-        mControl.notify("key_person","你好");
+        mControl.notifyUI("key_person","你好");
     }
 
     public void btnClickClear() {

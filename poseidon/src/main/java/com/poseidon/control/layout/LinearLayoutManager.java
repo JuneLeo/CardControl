@@ -3,8 +3,10 @@ package com.poseidon.control.layout;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
 import com.poseidon.control.card.CardManager;
 import com.poseidon.control.card.ICard;
+import com.poseidon.control.view.ICardView;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,18 +17,22 @@ public class LinearLayoutManager implements ILayoutManager {
 
     private LinearLayout container;
 
-    private Map<ICard, View> cachedViewMap;
-
-
     private CardManager manager;
 
     public LinearLayoutManager() {
-        cachedViewMap = new HashMap<>();
     }
 
     @Override
     public void setManager(CardManager manager) {
         this.manager = manager;
+    }
+
+    @Override
+    public void setContainer(ViewGroup container) {
+        if (!(container instanceof LinearLayout)) {
+            throw new IllegalArgumentException("container need LinearLayout");
+        }
+        this.container = (LinearLayout) container;
     }
 
     @Override
@@ -36,6 +42,7 @@ public class LinearLayoutManager implements ILayoutManager {
             createViewInternal(cardList, cardList.get(i));
         }
     }
+
     @Override
     public void onUpdateView() {
         List<ICard> cardList = manager.getCards();
@@ -45,37 +52,19 @@ public class LinearLayoutManager implements ILayoutManager {
         }
     }
 
-    @Override
-    public void onCreateCardView(ICard card) {
-        List<ICard> cardList = manager.getConcernCard();
-        if (!cardList.contains(card)) {
-            return;
+    private View createViewInternal(List<ICard> cardList, ICard currentCard) {
+        ICardView iCardView = currentCard.getCardView();
+        if (!iCardView.isAvailable()) {
+            return null;
         }
-        createViewInternal(cardList, card);
-    }
-
-
-
-    @Override
-    public void onUpdateCardView(ICard card) {
-        List<ICard> cardList = manager.getConcernCard();
-        if (!cardList.contains(card)) {
-            return;
-        }
-        updateViewInternal(cardList, card);
-    }
-
-    private void createViewInternal(List<ICard> cardList, ICard currentCard) {
-        if (!currentCard.getCardView().isAvailable()) {
-            return; //view认为自己不需要被初始化，不添加
-        }
-        View v = currentCard.getCardView().onCreateView(container);
+        View v = iCardView.onCreateView(container);
+        iCardView.onBindView(v, container); //绑定view和container
         int positionIndex = 0;
         for (ICard card : cardList) {
             if (card == currentCard) {
                 break;
             }
-            if (card.getCardView().isAvailable()) {
+            if (iCardView.isAvailable()) {
                 positionIndex++;
             }
         }
@@ -84,35 +73,29 @@ public class LinearLayoutManager implements ILayoutManager {
         } else {
             container.addView(v);
         }
-        currentCard.getCardView().onUpdateView(v,container);
-        cachedViewMap.put(currentCard, v);
+        return v;
     }
 
     private void updateViewInternal(List<ICard> cardList, ICard currentCard) {
-        if (cachedViewMap.get(currentCard) == null) {
-            createViewInternal(cardList, currentCard);
-            currentCard.getCardView().onUpdateView(cachedViewMap.get(currentCard),  container);
+        ICardView cardView = currentCard.getCardView();
+        if (!cardView.isAvailable()) {
+            return;
+        }
+        if (cardView.getView() == null || cardView.getRootView() == null) {
+            View viewInternal = createViewInternal(cardList, currentCard);
+            cardView.onUpdateView(viewInternal, container);
         } else {
-            View cachedView = cachedViewMap.get(currentCard);
-            if (currentCard.getCardView().useRecycledView()) {
-                currentCard.getCardView().onUpdateView(cachedView, container);
+            View cachedView = cardView.getView();
+            if (cardView.useRecycledView()) {
+                cardView.onUpdateView(cachedView, container);
             } else {
                 int viewIndex = container.indexOfChild(cachedView);
-                View v = currentCard.getCardView().onCreateView( container);
+                View v = cardView.onCreateView(container);
                 container.removeView(cachedView);
                 container.addView(v, viewIndex);
-                currentCard.getCardView().onUpdateView(v, container);
-                cachedViewMap.put(currentCard, v);
+                cardView.onUpdateView(v, container);
             }
         }
-    }
-
-    @Override
-    public void setContainer(ViewGroup container) {
-        if (!(container instanceof LinearLayout)) {
-            throw new IllegalArgumentException("container need LinearLayout");
-        }
-        this.container = (LinearLayout) container;
     }
 
     @Override

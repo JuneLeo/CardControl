@@ -9,7 +9,7 @@ import com.poseidon.control.view.ICardView;
  * Created by spf on 2018/11/15.
  */
 public abstract class AbstractPresenter<VM extends CardVM> implements ICardPresenter {
-    ICardView iCardView;
+    private ICardView iCardView;
     protected CardControl mControl;
     protected VM iCardVM;
 
@@ -20,18 +20,26 @@ public abstract class AbstractPresenter<VM extends CardVM> implements ICardPrese
     @Override
     public void onBindCard(ICard card) {
         iCardView = card.getCardView();
-        mControl = card.getPoseidonControl();
+        mControl = card.getCardControl();
         registEvent();
     }
 
     protected abstract void registEvent();
 
     @Override
-    public ICardView getICardView() {
+    public ICardView getCardView() {
         return iCardView;
     }
 
-    public void setCardVM(VM iCardVM) {
+    public void onBindCardVM(VM iCardVM) {
         this.iCardVM = iCardVM;
+    }
+
+    protected void updateView(){
+        ICardView cardView = getCardView();
+        if (cardView != null) {
+            if (cardView.getView() != null && cardView.getRootView() != null)
+                cardView.onUpdateView(cardView.getView(), cardView.getRootView());
+        }
     }
 }

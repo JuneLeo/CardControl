@@ -14,6 +14,8 @@ public class VipPresenter extends AbstractPresenter<VipCardVM> {
             @Override
             public void onNext(String s) {
                 iCardVM.name = s;
+                updateView();
+
             }
         });
 

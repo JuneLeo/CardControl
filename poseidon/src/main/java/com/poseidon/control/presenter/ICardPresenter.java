@@ -8,5 +8,5 @@ public interface ICardPresenter {
 
     void onBindCard(ICard card);
 
-    ICardView getICardView();
+    ICardView getCardView();
 }

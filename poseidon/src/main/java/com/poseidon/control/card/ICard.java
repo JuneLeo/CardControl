@@ -1,5 +1,8 @@
 package com.poseidon.control.card;
 
+import android.view.View;
+import android.view.ViewGroup;
+
 import com.poseidon.control.CardControl;
 import com.poseidon.control.control.ILifecycle;
 import com.poseidon.control.control.IPrority;
@@ -15,10 +18,6 @@ public interface ICard extends ILifecycle, IPrority {
 
     ICardPresenter getCardPresenter();
 
-    CardControl getPoseidonControl();
-
-    void onAttachCardManager(CardManager manager);
-
-    CardManager getCardManager();
+    CardControl getCardControl();
 
 }

@@ -12,10 +12,6 @@ public interface ILayoutManager {
 
     void onUpdateView();
 
-    void onCreateCardView(ICard iCard);
-
-    void onUpdateCardView(ICard iCard);
-
     void setContainer(ViewGroup container);
 
     ViewGroup getContainer();

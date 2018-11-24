@@ -18,61 +18,14 @@ import java.util.Set;
 public class CardManager {
     private List<ICard> mCardList;
 
-    private Map<String, Set<ICard>> mChangeMap;
-
-    private Set<String> mConcernKeys;
-
     public CardManager() {
         this.mCardList = new ArrayList<>();
-        this.mChangeMap = new HashMap<>();
-        this.mConcernKeys = new HashSet<>();
-    }
-
-
-    public void addCardConcern(ICard card, String concern) {
-        if (!mCardList.contains(card)) {
-            return;
-        }
-        if (mChangeMap.get(concern) == null) {
-            mChangeMap.put(concern, new HashSet<ICard>());
-        }
-        mChangeMap.get(concern).add(card);
-    }
-
-    public void addConcernKeys(String key) {
-        mConcernKeys.add(key);
-    }
-
-
-    public List<ICard> getConcernCard() {
-        List<ICard> result = new LinkedList<>();
-        for (String key : mConcernKeys) {
-            Set<ICard> set = mChangeMap.get(key);
-            if (set != null) {
-                result.addAll(set);
-            }
-        }
-        if (result.size() == 0) {
-            return mCardList;
-        }
-        mChangeMap.clear();
-        return result;
     }
 
 
     public void addCard(ICard card) {
-        card.onAttachCardManager(this);
         mCardList.add(card);
     }
-
-    public void setCardList(List<ICard> cardList) {
-        this.mCardList.clear();
-        for (ICard card : cardList) {
-            card.onAttachCardManager(this);
-        }
-        this.mCardList.addAll(cardList);
-    }
-
     public List<ICard> getCards() {
         return mCardList;
     }

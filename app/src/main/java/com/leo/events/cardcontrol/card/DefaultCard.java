@@ -29,10 +29,10 @@ public abstract class DefaultCard extends AbstractCard {
         CardVM cardVM = instanceCardVM();
         //presenter
         mCardPresenter = instancePresenter();
-        mCardPresenter.setCardVM(cardVM);
+        mCardPresenter.onBindCardVM(cardVM);
         //view
         mCardView = instanceCardView();
-        mCardView.setCardVM(cardVM);
+        mCardView.onBindCardVM(cardVM);
         //card
         mCardPresenter.onBindCard(this);
         //view绑定presenter
@@ -58,10 +58,6 @@ public abstract class DefaultCard extends AbstractCard {
      */
     protected abstract AbstractPresenter instancePresenter();
 
-    @Override
-    public void onAttachCardManager(CardManager manager) {
-        this.mCardManager = manager;
-    }
 
     @Override
     public ICardPresenter getCardPresenter() {
@@ -69,18 +65,13 @@ public abstract class DefaultCard extends AbstractCard {
     }
 
     @Override
-    public CardControl getPoseidonControl() {
+    public CardControl getCardControl() {
         return mControl;
     }
 
     @Override
     public ICardView getCardView() {
         return mCardView;
-    }
-
-    @Override
-    public CardManager getCardManager() {
-        return mCardManager;
     }
 
 

@@ -3,7 +3,7 @@ import android.util.Log;
 
 public final class Logger {
 
-    private static final String TAG = "ripper";
+    private static final String TAG = "cardcontrol";
     private static final int STACK_COUNT = 3;
 
     private Logger() {
