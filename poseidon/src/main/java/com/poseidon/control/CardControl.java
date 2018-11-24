@@ -46,6 +46,7 @@ public class CardControl {
         CardControl cardControl = cardControlMap.get(group);
         if (cardControl == null) {
             cardControl = new CardControl(group);
+            cardControlMap.put(group, cardControl);
         }
         return cardControl;
     }
