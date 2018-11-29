@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.leo.events.cardcontrol.R;
-import com.poseidon.control.view.AbstractView;
+import com.poseidon.control.control.view.AbstractView;
 
 /**
  * Created by spf on 2018/11/15.

@@ -1,9 +1,9 @@
-package com.poseidon.control.view;
+package com.poseidon.control.control.view;
 
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.poseidon.control.control.ILifecycle;
+import com.poseidon.control.control.helper.ILifecycle;
 
 public interface ICardView extends ILifecycle {
 

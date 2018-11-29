@@ -1,4 +1,4 @@
-package com.poseidon.control.obsever;
+package com.poseidon.control.event.obsever;
 
 /**
  * Created by spf on 2018/11/15.

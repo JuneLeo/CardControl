@@ -1,13 +1,11 @@
-package com.poseidon.control.card;
+package com.poseidon.control.control.card;
 
 import android.os.Bundle;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.poseidon.control.CardControl;
-import com.poseidon.control.control.IPrority;
-import com.poseidon.control.presenter.ICardPresenter;
-import com.poseidon.control.view.ICardView;
+import com.poseidon.control.control.helper.IPrority;
+import com.poseidon.control.control.presenter.ICardPresenter;
+import com.poseidon.control.control.view.ICardView;
 
 /**
  * Created by spf on 2018/11/15.

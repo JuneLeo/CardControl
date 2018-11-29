@@ -1,16 +1,14 @@
-package com.poseidon.control.layout;
+package com.poseidon.control.control.layout;
 
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.poseidon.control.card.CardManager;
-import com.poseidon.control.card.ICard;
-import com.poseidon.control.view.ICardView;
+import com.poseidon.control.control.card.CardManager;
+import com.poseidon.control.control.card.ICard;
+import com.poseidon.control.control.view.ICardView;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 public class LinearLayoutManager implements ILayoutManager {

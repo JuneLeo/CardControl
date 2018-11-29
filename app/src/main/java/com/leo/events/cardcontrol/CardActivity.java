@@ -15,8 +15,8 @@ import com.leo.events.cardcontrol.card.title.TitleCard;
 import com.leo.events.cardcontrol.card.toolbar.ToolbarCard;
 import com.leo.events.cardcontrol.card.vip.VipCard;
 import com.poseidon.control.CardControl;
-import com.poseidon.control.card.CardManager;
-import com.poseidon.control.obsever.Subscriber;
+import com.poseidon.control.control.card.CardManager;
+import com.poseidon.control.event.obsever.Subscriber;
 import com.poseidon.control.wrapper.CardWrapper;
 import java.util.Map;
 

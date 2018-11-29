@@ -1,9 +1,8 @@
-package com.poseidon.control.layout;
+package com.poseidon.control.control.layout;
 
 import android.view.ViewGroup;
 
-import com.poseidon.control.card.CardManager;
-import com.poseidon.control.card.ICard;
+import com.poseidon.control.control.card.CardManager;
 
 
 public interface ILayoutManager {

@@ -3,8 +3,8 @@ package com.poseidon.control.event;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.poseidon.control.obsever.Observable;
-import com.poseidon.control.obsever.ObservableGroup;
+import com.poseidon.control.event.obsever.Observable;
+import com.poseidon.control.event.obsever.ObservableGroup;
 
 import java.util.HashMap;
 import java.util.Map;

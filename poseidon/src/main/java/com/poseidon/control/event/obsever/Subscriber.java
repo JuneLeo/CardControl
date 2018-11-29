@@ -1,4 +1,4 @@
-package com.poseidon.control.obsever;
+package com.poseidon.control.event.obsever;
 
 import com.poseidon.control.debug.Logger;
 

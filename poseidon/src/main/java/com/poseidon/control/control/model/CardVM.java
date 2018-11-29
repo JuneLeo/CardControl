@@ -1,4 +1,4 @@
-package com.poseidon.control.model;
+package com.poseidon.control.control.model;
 
 import java.io.Serializable;
 

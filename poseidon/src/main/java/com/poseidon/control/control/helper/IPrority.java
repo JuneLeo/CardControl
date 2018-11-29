@@ -1,4 +1,4 @@
-package com.poseidon.control.control;
+package com.poseidon.control.control.helper;
 
 import android.support.annotation.IntDef;
 

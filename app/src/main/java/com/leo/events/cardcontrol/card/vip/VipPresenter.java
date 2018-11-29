@@ -1,7 +1,7 @@
 package com.leo.events.cardcontrol.card.vip;
 
-import com.poseidon.control.obsever.Subscriber;
-import com.poseidon.control.presenter.AbstractPresenter;
+import com.poseidon.control.event.obsever.Subscriber;
+import com.poseidon.control.control.presenter.AbstractPresenter;
 
 /**
  * Created by spf on 2018/11/15.
