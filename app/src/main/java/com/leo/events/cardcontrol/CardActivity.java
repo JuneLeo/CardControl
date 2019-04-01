@@ -50,6 +50,9 @@ public class CardActivity extends AppCompatActivity {
 
 
 
+
+
+
     }
 
     private void initLinearLayout() {
