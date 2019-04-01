@@ -44,6 +44,9 @@ public class CardActivity extends AppCompatActivity {
         mControl.notifyAllView();
 
 
+
+
+
     }
 
     private void initLinearLayout() {
