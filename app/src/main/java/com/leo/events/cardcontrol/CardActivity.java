@@ -45,8 +45,7 @@ public class CardActivity extends AppCompatActivity {
 
 
 
-
-
+        haha
 
 
     }
