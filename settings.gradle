@@ -1,1 +1,10 @@
 include ':app',':poseidon'
+
+include ':cardadapter'
+project(':cardadapter').projectDir = new File('card/cardadapter')
+
+include ':helper'
+project(':helper').projectDir = new File('card/helper')
+
+include ':complier'
+project(':complier').projectDir = new File('card/complier')
