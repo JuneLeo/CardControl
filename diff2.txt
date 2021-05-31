@@ -1,0 +1,17 @@
+.gradle/init.gradle
+.gradle/init.gradle
+uploadArchives
+编写dependencies脚本
+----正在扫描：com.autonavi.minimap:ajx3
+----正在扫描：com.autonavi.minimap:alog
+----正在扫描：com.autonavi.amapengine:engine
+----正在扫描：com.autonavi.amapengine:data
+----正在扫描：com.autonavi.amapengine:common
+----正在扫描：com.autonavi.amapengine:xbus
+----正在扫描：com.autonavi.amapengine:pos
+----正在扫描：com.autonavi.amapengine:map
+----正在扫描：com.autonavi.amapengine:poi
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 5.0.
+See https://docs.gradle.org/4.8.1/userguide/command_line_interface.html#sec:command_line_warnings
+1 actionable task: 1 executed

@@ -1,3 +1,13 @@
+import com.android.build.gradle.AppPlugin
+import com.android.build.gradle.LibraryPlugin
+import com.android.build.gradle.api.ApplicationVariant
+import com.android.build.gradle.internal.scope.VariantScope
+
+import java.lang.reflect.Field
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+import java.util.function.Consumer
+
 apply plugin: 'com.android.application'
 
 android {
@@ -16,11 +26,232 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+
+    flavorDimensions "version"
+    productFlavors {
+        demo {
+            // Assigns this product flavor to the "version" flavor dimension.
+            // If you are using only one dimension, this property is optional,
+            // and the plugin automatically assigns all the module's flavors to
+            // that dimension.
+            dimension "version"
+            applicationIdSuffix ".demo"
+            versionNameSuffix "-demo"
+        }
+        full {
+            dimension "version"
+            applicationIdSuffix ".full"
+            versionNameSuffix "-full"
+        }
+    }
+}
+
+task june  {
+    doLast {
+
+        android.getApplicationVariants().all(new Action<ApplicationVariant>() {
+            @Override
+            void execute(ApplicationVariant applicationVariant) {
+
+                String name = applicationVariant.getName();
+                //debugCompileClasspath
+                Configuration dependenciesConfiguration = getProject().getConfigurations().getByName(name + "CompileClasspath");
+
+                ArtifactCollection artifactCollection =  dependenciesConfiguration.getIncoming()
+                        .artifactView(new Action<org.gradle.api.artifacts.ArtifactView.ViewConfiguration>() {
+                            @Override
+                            void execute(org.gradle.api.artifacts.ArtifactView.ViewConfiguration viewConfiguration) {
+                                viewConfiguration.lenient(true)
+                            }
+                        }).getArtifacts();
+
+                Set<ResolvedArtifactResult>  resolvedArtifactResults = artifactCollection.getArtifacts();
+                resolvedArtifactResults.forEach(new Consumer<ResolvedArtifactResult>() {
+                    @Override
+                    void accept(ResolvedArtifactResult resolvedArtifactResult) {
+                        println(resolvedArtifactResult.toString())
+                    }
+                })
+
+
+            }
+        });
+
+
+    }
+}
+
+
+
+task juneleo {
+    doLast {
+
+        Object o = project.getExtensions().getByName("android");
+
+        def pluginClass = ['com.android.build.gradle.AppPlugin', 'com.android.build.gradle.LibraryPlugin']
+        LibraryPlugin basePlugin;
+        for (String clz : pluginClass) {
+            basePlugin = project.getPlugins().getPlugin(Class.forName(clz))
+            if (basePlugin != null) {
+                break
+            }
+        }
+
+        if (basePlugin == null) {
+            throw new RuntimeException("no plugin exception")
+        }
+
+
+        Field filed =  basePlugin.getClass().getDeclaredField("variantManager")
+        filed.setAccessible(true)
+        Object variantManager = filed.get(basePlugin)
+
+        List<VariantScope> scopes = basePlugin.getVariantManager().getVariantScopes()
+        def flavor = ""
+        if (!basePlugin.getVariantManager().getProductFlavors().isEmpty()) {
+            flavor = basePlugin.getVariantManager().getProductFlavors().keySet().collect().get(0)
+        }
+
+        def type = basePlugin.getVariantManager().buildTypes.keySet().collect().get(0)
+
+        VariantScope variantScope = basePlugin.getVariantManager().getVariantScopes().find {
+            it.getVariantData().getName().toLowerCase().equals((flavor + type).toLowerCase())
+        }
+
+        if (variantScope == null ) {
+            throw new RuntimeException();
+        }
+
+        Set<ResolvedArtifactResult> resolvedArtifactResults =  variantScope.getArtifactCollection(com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH,
+                com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.EXTERNAL,
+                com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.CLASSES)
+        .getArtifacts()
+
+        resolvedArtifactResults.forEach(new Consumer<ResolvedArtifactResult>() {
+            @Override
+            void accept(ResolvedArtifactResult resolvedArtifactResult) {
+                println(resolvedArtifactResults.toString())
+            }
+        })
+
+
+
+
+        android.getApplicationVariants().all(new Action<ApplicationVariant>() {
+            @Override
+            void execute(ApplicationVariant applicationVariant) {
+
+                String name = applicationVariant.getName();
+                //debugCompileClasspath
+                Configuration dependenciesConfiguration = getProject().getConfigurations().getByName(name + "CompileClasspath");
+
+                dependenciesConfiguration.getIncoming()
+
+                def files = project.getPlugins()
+                        .getPlugin(com.android.build.gradle.AppPlugin.class)
+                        .getVariantManager()
+                        .getVariantScopes()
+                        .get(0) //可以指定
+                        .getArtifactCollection(com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH, com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.EXTERNAL, com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.CLASSES)
+                        .getArtifacts()
+
+
+                Set<ResolvedComponentResult> allComponents = dependenciesConfiguration.getIncoming().getResolutionResult().getAllComponents();
+
+                Task inputTask = getProject().getTasks().getByName("check" + name.capitalize() + "Classpath");
+//                Task inputTask = applicationVariant.javaCompile
+
+
+                try {
+                    String path_code = "/Users/juneleo/Desktop/dependencies.csv";
+                    Writer fileWriter = new FileWriter(path_code)
+
+                    fileWriter.write("dependencies");
+                    fileWriter.write(",");
+                    fileWriter.write("size");
+
+                    for (ResolvedComponentResult allComponent : allComponents) {
+                        if ("unspecified".equals(allComponent.moduleVersion.version)) {
+                            continue
+                        }
+                        fileWriter.write("\n")
+
+                        String depenName = allComponent.moduleVersion.toString();
+                        File tempFile;
+                        for (File file : inputTask.getInputs().getFiles().getFiles()) {
+
+                            String absolutePath = file.getAbsolutePath();
+
+                            if (absolutePath.contains(allComponent.getModuleVersion().getModule().getName())) {
+                                tempFile = file
+                                break;
+                            }
+
+                        }
+
+
+                        fileWriter.write(depenName)
+                        fileWriter.write(",")
+                        if (tempFile != null) {
+//                            tempFile = tempFile.getParentFile().getParentFile();
+                            long size = 0;
+                            println(tempFile.getAbsolutePath())
+                            fileWriter.write(tempFile.length() + "")
+                        } else {
+                            fileWriter.write("0")
+                        }
+
+                    }
+                    fileWriter.close()
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+    }
+}
+
+static long getFileLength(File dir) {    //dir = F:\day06\day07
+    //1,定义一个求和变量
+    long len = 0;
+    //2,获取该文件夹下所有的文件和文件夹listFiles();
+    File[] subFiles = dir.listFiles();          //day07 Demo1_Student.class Demo1_Student.java
+    //3,遍历数组
+    for (File subFile : subFiles) {
+        //4,判断是文件就计算大小并累加
+        if (subFile.isFile()) {
+            len = len + subFile.length();
+            //5,判断是文件夹,递归调用
+        } else {
+            len = len + getFileLength(subFile);
+        }
+    }
+    return len;
+}
+
+afterEvaluate {
+
+
+}
+
+configurations.all {
+    it.exclude group: 'com.android.support', module: 'support-vector-drawable'
+}
+
+
+afterEvaluate {
+    println("编写dependencies脚本")
+    project.getConfigurations().implementation.getDependencies()
+
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation('com.android.support:appcompat-v7:26.1.0') {
+        exclude group:'com.android.support',module:'support-vector-drawable'
+    }
     implementation 'com.android.support:design:26.1.0'
     implementation 'com.android.support:recyclerview-v7:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
@@ -35,5 +266,12 @@ dependencies {
     implementation project(':helper')
     implementation project(':cardadapter')
     annotationProcessor project(':complier')
-    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation('com.google.code.gson:gson:2.2.4') {
+        force = false
+    }
+
+
+    task junele(type:com.card.script.DspTask){
+
+    }
 }
