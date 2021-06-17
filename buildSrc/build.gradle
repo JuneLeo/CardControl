@@ -1,0 +1,44 @@
+import java.util.function.Consumer
+
+buildscript {
+
+    repositories {
+        google()
+        jcenter()
+        mavenLocal()
+        maven { url "https://jitpack.io" }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.2.1'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
+//        classpath 'com.task.script:dsp-cc:1.0'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+
+apply plugin: 'groovy'
+
+
+//apply from:file('upload.gradle')
+apply plugin: 'com.github.dcendents.android-maven'
+group = 'com.task.script'
+
+sourceCompatibility = JavaVersion.VERSION_1_7
+targetCompatibility = JavaVersion.VERSION_1_7
+
+repositories {
+    google()
+    jcenter()
+}
+
+dependencies {
+    implementation gradleApi()
+    implementation localGroovy()
+    implementation 'com.android.tools.build:gradle:3.2.1'
+    implementation group: 'net.sourceforge.javacsv', name: 'javacsv', version: '2.0'
+}
+
+

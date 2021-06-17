@@ -1,0 +1,13 @@
+
+apply plugin: 'groovy'
+apply plugin: 'maven'
+
+uploadArchives {
+    println('uploadArchives')
+    repositories.mavenDeployer {
+        repository(url: rootProject.repositories.mavenLocal().getUrl())
+        pom.groupId = 'com.task.script' // 组名
+        pom.artifactId = 'dsp-cc' // 插件名
+        pom.version = '1.0' // 版本号
+    }
+}
